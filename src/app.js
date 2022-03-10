@@ -5,6 +5,9 @@ const geocode = require("./utils/geocode");
 const forecast = require("./utils/forecast");
 const app = express();
 
+// To record all the searches
+const saveSearch = require('./SearchRecord/LoadSearch')
+
 const port = process.env.PORT || 3000;
 // Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, "../public");
@@ -69,7 +72,9 @@ app.get("/weather", (req, res) => {
           }
         });
       }
+      saveSearch(req.query.address) // Load all te searches to db
     }
+    
   );
 });
 
