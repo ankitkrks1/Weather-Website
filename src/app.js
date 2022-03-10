@@ -1,11 +1,11 @@
 const path = require("path");
 const express = require("express");
 const hbs = require("hbs");
-const geocode = require('./utils/geocode')
-const forecast = require("./utils/forecast")
+const geocode = require("./utils/geocode");
+const forecast = require("./utils/forecast");
 const app = express();
 
-const port = process.env.Port || 3000
+const port = process.env.PORT || 3000;
 // Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, "../public");
 const viewsPath = path.join(__dirname, "../templates/views");
@@ -47,29 +47,30 @@ app.get("/weather", (req, res) => {
       error: "Search Can't be Empty",
     });
   }
-  geocode(req.query.address,(error,{lattitude,longitude,location}= {})=>{
-    if(error){
-      return res.send({
-        error: error, 
-      })
+  geocode(
+    req.query.address,
+    (error, { lattitude, longitude, location } = {}) => {
+      if (error) {
+        return res.send({
+          error: error,
+        });
+      } else {
+        forecast(lattitude, longitude, (error, forecast) => {
+          if (error) {
+            return res.send({
+              error,
+            });
+          } else {
+            res.send({
+              forecast,
+              location,
+              address: req.query.address,
+            });
+          }
+        });
+      }
     }
-    else{
-      forecast(lattitude,longitude,(error,forecast)=>{
-        if(error){
-          return res.send({
-            error,
-          })
-        }
-        else{
-          res.send({
-            forecast,
-            location,
-            address: req.query.address,
-          })
-        }
-      })
-    }
-  })
+  );
 });
 
 app.get("/help/*", (req, res) => {
@@ -89,5 +90,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("Server is up on port"+ port);
+  console.log("Server is up on port " + port);
 });
