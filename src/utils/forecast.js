@@ -20,15 +20,10 @@ const forecast = (lattitude, longitude, callback) => {
       } else if (body.error) {
         callback(body.error.type, undefined);
       } else {
-          const data = body.current;
+         
           f(body)
 
-        callback(undefined,data.weather_descriptions[0] +
-          ". It is currently " +
-          data.temperature +
-          ". It feels like " +
-          data.feelslike+" Wind Direction :"+data.wind_dir+ 
-          ", Wind Speed: "+data.wind_speed+"km/h, Humidity: "+data.humidity+" ");
+        callback(undefined,body);
       }
     });
   };

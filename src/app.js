@@ -4,10 +4,11 @@ const hbs = require("hbs");
 const geocode = require("./utils/geocode");
 const forecast = require("./utils/forecast");
 const app = express();
-require('../src/DB/db/mongoose')
+require('./DB/db/mongoose')
 
 // To record all the searches
-const saveSearch = require('./SearchRecord/LoadSearch')
+const saveSearch = require('./SearchRecord/LoadSearch');
+const forecastTxt = require("./forecastTxt");
 
 const port = process.env.PORT || 3000;
 // Define paths for Express config
@@ -59,7 +60,10 @@ app.get("/weather", (req, res) => {
           error: error,
         });
       } else {
-        forecast(lattitude, longitude, (error, forecast) => {
+        forecast(lattitude, longitude, (error, body) => {
+  
+          const forecast = forecastTxt(body)
+          
           if (error) {
             return res.send({
               error,
@@ -78,6 +82,26 @@ app.get("/weather", (req, res) => {
     
   );
 });
+
+app.get('/w',(req,res)=>{
+  const lattitude = req.query.lat
+  const longitude = req.query.long
+
+  forecast(lattitude, longitude, (error, body) => {
+  
+    const forecast = forecastTxt(body)
+    
+    if (error) {
+      return res.send({
+        error,
+      });
+    } else {
+      res.send({
+        forecast
+      });
+    }
+  });
+})
 
 app.get("/help/*", (req, res) => {
   res.render("404", {
