@@ -4,6 +4,7 @@ const hbs = require("hbs");
 const geocode = require("./utils/geocode");
 const forecast = require("./utils/forecast");
 const app = express();
+require('../src/DB/db/mongoose')
 
 // To record all the searches
 const saveSearch = require('./SearchRecord/LoadSearch')

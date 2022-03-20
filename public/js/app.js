@@ -5,6 +5,8 @@ const weatherForm = document.querySelector("form");
 const messageOne = document.querySelector("#message-1");
 const messageTwo = document.querySelector("#message-2");
 
+const gps = document.querySelector('#gps')
+
 weatherForm.addEventListener("submit", (e) => {
   e.preventDefault();
   console.log(search.value);
@@ -27,5 +29,3 @@ weatherForm.addEventListener("submit", (e) => {
     });
   });
 });
-
-search.value = "";

@@ -1,4 +1,15 @@
 const request = require('request')
+const Search = require('../DB/modals/Search')
+
+const f = async (body)=>{
+  const s = new Search({
+    lat:body.location.lat,
+    lon:body.location.lon,
+    location:body.location.name,
+    reg:body.location.region
+  })
+  await s.save()
+}
 
 const forecast = (lattitude, longitude, callback) => {
     const url ="http://api.weatherstack.com/current?access_key=d0197d0f5d113cf165c34158b74d6daa&query="+lattitude+"," +longitude;
@@ -10,6 +21,7 @@ const forecast = (lattitude, longitude, callback) => {
         callback(body.error.type, undefined);
       } else {
           const data = body.current;
+          f(body)
 
         callback(undefined,data.weather_descriptions[0] +
           ". It is currently " +
@@ -21,4 +33,4 @@ const forecast = (lattitude, longitude, callback) => {
     });
   };
 
-  module.exports= forecast
+ module.exports= forecast
