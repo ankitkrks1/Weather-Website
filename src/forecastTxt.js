@@ -1,6 +1,5 @@
 const forecastTxt = (body)=>{
 
-    console.log(body)
     const data = body.current;
     const txt = 'In '+ body.location.name+ ", "+body.location.region+ ":- " +data.weather_descriptions[0] +
     ". It is currently " +

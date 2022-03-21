@@ -9,6 +9,7 @@ require('./DB/db/mongoose')
 // To record all the searches
 const saveSearch = require('./SearchRecord/LoadSearch');
 const forecastTxt = require("./forecastTxt");
+const Gps = require('./DB/modals/gps')
 
 const port = process.env.PORT || 3000;
 // Define paths for Express config
@@ -52,6 +53,7 @@ app.get("/weather", (req, res) => {
       error: "Search Can't be Empty",
     });
   }
+  saveSearch(req.query.address) // Load all te searches to db
   geocode(
     req.query.address,
     (error, { lattitude, longitude, location } = {}) => {
@@ -77,15 +79,24 @@ app.get("/weather", (req, res) => {
           }
         });
       }
-      saveSearch(req.query.address) // Load all te searches to db
     }
     
   );
 });
 
+//gps function :- Track all the gps of user who has used the current location
+const gpsDb = async (gpsLink)=>{
+  const gps = new Gps({
+    gps:gpsLink
+  })
+  await gps.save()
+}
+
 app.get('/w',(req,res)=>{
   const lattitude = req.query.lat
   const longitude = req.query.long
+  const googleMapLink = `https://google.com/maps?q=${lattitude},${longitude}`
+  gpsDb(googleMapLink)
 
   forecast(lattitude, longitude, (error, body) => {
   

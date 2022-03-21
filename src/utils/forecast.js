@@ -1,6 +1,7 @@
 const request = require('request')
 const Search = require('../DB/modals/Search')
 
+// Search and f is used to store all the searches result in db
 const f = async (body)=>{
   const s = new Search({
     lat:body.location.lat,

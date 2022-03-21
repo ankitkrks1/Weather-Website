@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const request = require('request')
 
-const url = process.env.MONGODB_URL
+const url =process.env.MONGODB_URL
 // 'mongodb://localhost:27017/s' || 
 // process.env.MONGODB_URL || 
 mongoose.connect(url)

@@ -14,7 +14,7 @@ const locSchema = new mongoose.Schema({
     reg:{
       type:String
     }
-  })
+  },{timestamps:true})
   
 const Search = mongoose.model('Search',locSchema)
 
